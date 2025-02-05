@@ -1,4 +1,6 @@
+import requests
 from typing import List
+
 
 class Product:
     def __init__(self, name: str, price: float):
@@ -53,6 +55,21 @@ class ShoppingCart:
 
     def __repr__(self):
         return f"ShoppingCart(client_name={self.client_name}, items={self.items}, total={self.total:.2f})"
+
+
+    def make_invoice(self):
+        invoice_data = {
+            "client_name": self.client_name,
+            "items": "\n".join([f"- {item['product'].name} (x{item['quantity']}): ${item['product'].price * item['quantity']:.2f}" for item in self.items]),
+            "total": self.total
+        }
+        return send_invoice_to_server(invoice_data)
+
+
+def send_invoice_to_server(invoice_data: dict):
+    request = requests.post("https://api.invoice-generator.com", json=invoice_data)
+    return request.json()
+
 
 # Example Usage
 if __name__ == "__main__":
