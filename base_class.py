@@ -8,6 +8,7 @@ class Product:
     def __repr__(self):
         return f"Product(name={self.name}, price={self.price})"
 
+
 class ShoppingCart:
     def __init__(self, client_name: str):
         self.client_name = client_name
